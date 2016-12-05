@@ -23,7 +23,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login_activity);
+		setContentView(R.layout.activity_login);
 
 		// 为LOGIN 按钮添加监听接口,按下跳转到欢迎界面(Hello World)
 		btn_login.setOnClickListener(new OnClickListener() {

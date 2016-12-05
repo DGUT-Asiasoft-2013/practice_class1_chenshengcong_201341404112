@@ -97,10 +97,11 @@ public class PictureInputCellFragment extends BaseInputFragment {
 		else if(requestCode==RESULTCODE_ALBUM){
 			try {
 				Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+				imageView.setImageBitmap(bmp);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

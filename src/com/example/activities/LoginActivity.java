@@ -15,9 +15,9 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_register);
+		setContentView(R.layout.login_activity);
 	
-	/*	Button btn_login = (Button)findViewById(R.id.btn_login);
+		Button btn_login = (Button)findViewById(R.id.btn_login);
 		
 		
 		btn_login.setOnClickListener(new OnClickListener() {
@@ -28,7 +28,7 @@ public class LoginActivity extends Activity {
 			toast.show();
 				
 			}
-		});*/
+		});
 	}
 
 

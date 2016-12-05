@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="#1F5B8D"
     android:orientation="vertical"
-     tools:context="${relativePackage}.${activityClass}" >
+    tools:context="${relativePackage}.${activityClass}" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,7 +15,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-         
+            <fragment
+                android:id="@+id/input_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="com.example.fragments.SimpleTextInputCellFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
+
+            <fragment
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="com.example.fragments.SimpleTextInputCellFragment"
+                tools:layout="@layout/fragment_inputcell_simpletext" />
 
             <Button
                 android:id="@+id/btn_login"
@@ -23,6 +35,14 @@
                 android:layout_height="50dp"
                 android:text="LOGIN"
                 android:textColor="@android:color/black" />
+            <Button 
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="REGISTER"
+                android:textColor="@android:color/black"
+                
+                />
         </LinearLayout>
     </ScrollView>
 

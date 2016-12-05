@@ -35,6 +35,7 @@
                 android:layout_height="50dp"
                 android:text="LOGIN"
                 android:textColor="@android:color/black" />
+
             <Button 
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"

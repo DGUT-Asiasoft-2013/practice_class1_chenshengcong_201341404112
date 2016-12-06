@@ -51,7 +51,7 @@ public class PictureInputCellFragment extends BaseInputFragment {
 	public void onImageViewClicked() {
 		String[] items = { "≈ƒ’’", "œ‡≤·" };
 
-		new AlertDialog.Builder(getActivity()).setTitle(labelText.getText()).setMessage(HintText.getText())
+		new AlertDialog.Builder(getActivity()).setTitle(labelText.getText())
 				.setItems(items, new OnClickListener() {
 
 					@Override

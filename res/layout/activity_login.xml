@@ -6,6 +6,15 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="16sp"
+        android:text="LOGIN TO HELLO"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -29,21 +38,41 @@
                 class="com.example.fragments.SimpleTextInputCellFragment"
                 tools:layout="@layout/fragment_inputcell_simpletext" />
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="LOGIN"
-                android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/btn_forget_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="true"
+                android:padding="2dp"
+                android:scrollHorizontally="false"
+                android:text="忘记密码?"
+                android:textColor="#00f" />
 
-            <Button 
-                android:id="@+id/btn_register"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="REGISTER"
-                android:textColor="@android:color/black"
-                
-                />
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="LOGIN"
+                  
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="REGISTER"
+             
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

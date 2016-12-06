@@ -29,7 +29,7 @@ public class BootActivity extends Activity {
 			public void run() {
 				StartLoginActivity();
 			}
-		}, 1000);
+		}, 1000);//在此界面停留1秒后跳转到登录界面
 	}
 
 	protected void StartLoginActivity() {

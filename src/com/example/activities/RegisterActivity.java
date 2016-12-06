@@ -23,16 +23,17 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.activity_register);
 		Button btn_submit = (Button) findViewById(R.id.btn_submit);
 		
+		//将绑定各个界面的?
 		fragInputCellAccount = (SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_accout);
 		fragInputCellPassword = (SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_password);
 		fragInputCellPasswordRepeat=(SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_password_repeat);
 		fragInputEmail=(SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_email);
-		
+		//为"提交"按钮添加监听接口
 		btn_submit.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				goLogin();
+				goLogin();//跳转到登陆界面
 				
 			}
 		});

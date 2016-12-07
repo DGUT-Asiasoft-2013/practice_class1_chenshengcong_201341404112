@@ -1,6 +1,6 @@
 package com.example.activities;
 
-import com.example.fragments.SimpleTextInputCellFragment;
+import com.example.fragments.inputcells.SimpleTextInputCellFragment;
 import com.example.login.R;
 
 import android.app.Activity;
@@ -15,25 +15,26 @@ public class RegisterActivity extends Activity {
 	SimpleTextInputCellFragment fragInputCellPassword;
 	SimpleTextInputCellFragment fragInputCellPasswordRepeat;
 	SimpleTextInputCellFragment fragInputEmail;
+	Button btn_submit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		Button btn_submit = (Button) findViewById(R.id.btn_submit);
+		btn_submit = (Button) findViewById(R.id.btn_submit);
 		
-		//½«°ó¶¨¸÷¸ö½çÃæµÄ?
+		//ç»‘å®šå„ä¸ªæ§ä»¶
 		fragInputCellAccount = (SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_accout);
 		fragInputCellPassword = (SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_password);
 		fragInputCellPasswordRepeat=(SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_password_repeat);
 		fragInputEmail=(SimpleTextInputCellFragment)getFragmentManager().findFragmentById(R.id.input_email);
-		//Îª"Ìá½»"°´Å¥Ìí¼Ó¼àÌı½Ó¿Ú
+		//ä¸º"æäº¤"æŒ‰é’®æ·»åŠ ç›‘å¬æ¥å£å®ç°
 		btn_submit.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				goLogin();//Ìø×ªµ½µÇÂ½½çÃæ
+				goLogin();//è·³è½¬åˆ°ç™»é™†ç•Œé¢
 				
 			}
 		});
@@ -46,23 +47,23 @@ public class RegisterActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 
-		fragInputCellAccount.setLabelText("ÕÊ»§Ãû");
+		fragInputCellAccount.setLabelText("ç”¨æˆ·å");
 		{
-			fragInputCellAccount.setHintText("ÇëÊäÈëÕË»§Ãû");
+			fragInputCellAccount.setHintText("è¯·è¾“å…¥ç”¨æˆ·å");
 		}
-		fragInputCellPassword.setLabelText("ÃÜÂë");
+		fragInputCellPassword.setLabelText("å¯†ç ");
 		{
-			fragInputCellPassword.setHintText("ÇëÊäÈëÃÜÂë");
+			fragInputCellPassword.setHintText("è¯·è¾“å…¥6-20ä½å¯†ç ");
 			fragInputCellPassword.setIsPassword(true);
 		}
-		fragInputCellPasswordRepeat.setLabelText("ÖØ¸´ÃÜÂë");
+		fragInputCellPasswordRepeat.setLabelText("ç¡®è®¤å¯†ç ");
 		{
-			fragInputCellPasswordRepeat.setHintText("ÇëÖØ¸´ÊäÈëÃÜÂë");
+			fragInputCellPasswordRepeat.setHintText("è¯·å†æ¬¡è¾“å…¥å¯†ç ");
 			fragInputCellPasswordRepeat.setIsPassword(true);
 		}
-		fragInputEmail.setLabelText("µç×ÓÓÊÏä");
+		fragInputEmail.setLabelText("é‚®ç®±åœ°å€");
 		{
-			fragInputEmail.setHintText("ÇëÊäÈëµç×ÓÓÊÏä");
+			fragInputEmail.setHintText("è¯·è¾“å…¥éªŒè¯é‚®ç®±åœ°å€");
 		}
 
 	}

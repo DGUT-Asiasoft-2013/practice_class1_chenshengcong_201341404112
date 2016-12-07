@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        class="com.example.fragments.VersionFragments"
+        class="com.example.activities.VersionFragments"
         tools:layout="@layout/fragment_version" />
 
 </RelativeLayout>

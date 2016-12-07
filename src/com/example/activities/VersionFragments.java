@@ -1,4 +1,4 @@
-package com.example.fragments;
+package com.example.activities;
 
 import com.example.login.R;
 

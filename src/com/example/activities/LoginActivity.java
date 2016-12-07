@@ -1,6 +1,6 @@
 package com.example.activities;
 
-import com.example.fragments.SimpleTextInputCellFragment;
+import com.example.fragments.inputcells.SimpleTextInputCellFragment;
 import com.example.login.R;
 
 import android.accounts.Account;
@@ -27,7 +27,7 @@ public class LoginActivity extends Activity {
 		fragInputCellAccount = (SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_username);
 		fragInputCellPassword = (SimpleTextInputCellFragment) getFragmentManager()
 				.findFragmentById(R.id.input_password);
-		// ÎªLOGIN °´Å¥Ìí¼Ó¼àÌı½Ó¿Ú,°´ÏÂÌø×ªµ½»¶Ó­½çÃæ(Hello World)
+		// ä¸º"LOGIN"æŒ‰é’®æ·»åŠ ç›‘å¬æ¥å£,è·³è½¬åˆ°ä¸»ç•Œé¢(Hello World)
 		btn_login.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		// ÎªREGISTER°´Å¥Ìí¼Ó¼àÌı½Ó¿Ú,Ìø×ªµ½×¢²áÒ³Ãæ(Register)
+		// ä¸º"REGISTER"æŒ‰é’®è°ƒåŠ ç›‘å¬æ¥å£,è·³è½¬åˆ°æ³¨å†Œç•Œé¢(Register)
 		btn_register.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		// Îª"Íü¼ÇÃÜÂë?"TextViewÉèÖÃ¼àÌı½Ó¿Ú
+		// ç»‘å®š"å¿˜è®°å¯†ç ?"TextView,å¹¶ä¸ºå®ƒè®¾ç½®å¯ç‚¹å‡»,æ·»åŠ ç›‘å¬æ¥å£
 		findViewById(R.id.btn_forget_password).setClickable(true);
 		findViewById(R.id.btn_forget_password).setOnClickListener(new OnClickListener() {
 
@@ -80,13 +80,13 @@ public class LoginActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		fragInputCellAccount.setLabelText("ÕÊ»§Ãû");
+		fragInputCellAccount.setLabelText("ç”¨æˆ·å");
 		{
-			fragInputCellAccount.setHintText("ÇëÊäÈëÕË»§Ãû");
+			fragInputCellAccount.setHintText("è¯·è¾“å…¥ç”¨æˆ·å");
 		}
-		fragInputCellPassword.setLabelText("ÃÜÂë");
+		fragInputCellPassword.setLabelText("å¯†ç ");
 		{
-			fragInputCellPassword.setHintText("ÇëÊäÈëÃÜÂë");
+			fragInputCellPassword.setHintText("è¯·è¾“å…¥å¯†ç ");
 			fragInputCellPassword.setIsPassword(true);
 		}
 	}

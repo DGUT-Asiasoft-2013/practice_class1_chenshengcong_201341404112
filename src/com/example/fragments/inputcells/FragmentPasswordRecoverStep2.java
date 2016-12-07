@@ -1,7 +1,6 @@
-package com.example.fragments;
+package com.example.fragments.inputcells;
 
 import com.example.activities.LoginActivity;
-import com.example.activities.PasswordRecover;
 import com.example.login.R;
 
 import android.app.Fragment;
@@ -29,7 +28,7 @@ public class FragmentPasswordRecoverStep2 extends Fragment {
 	 				frag_NewPasswordRepeat=(SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_new_password_repeat);
 	 				
 	 			}
-	 //Îª"Ìá½»"°´Å¥µ÷¼Ó¼àÌı½Ó¿Ú
+	 //ä¸ºé‡ç½®æŒ‰é’®æ·»åŠ ç›‘å¬æ¥å£
 	 			view.findViewById(R.id.btn_submit_new_password).setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -47,22 +46,22 @@ public class FragmentPasswordRecoverStep2 extends Fragment {
 		// TODO Auto-generated method stub
 		super.onResume();
 		
-		frag_CheckCode.setLabelText("ÇëÊäÈëÑéÖ¤Âë");
+		frag_CheckCode.setLabelText("éªŒè¯ç ");
 		{
-			frag_CheckCode.setHintText("ÊäÈëÊÕµ½µÄÑéÖ¤Âë");
+			frag_CheckCode.setHintText("è¯·è¾“å…¥æ”¶åˆ°çš„éªŒè¯ç ");
 		}
-		frag_NewPassword.setLabelText("ĞÂÃÜÂë");
+		frag_NewPassword.setLabelText("æ–°å¯†ç ");
 		{
-			frag_NewPassword.setHintText("ÇëÊäÈëĞÂÃÜÂë");
+			frag_NewPassword.setHintText("è¯·è¾“å…¥æ–°å¯†ç ");
 			frag_NewPassword.setIsPassword(true);
 		}
-		frag_NewPasswordRepeat.setLabelText("ÇëÈ·ÈÏÃÜÂë");
+		frag_NewPasswordRepeat.setLabelText("ç¡®è®¤æ–°å¯†ç ");
 		{
-			frag_NewPasswordRepeat.setHintText("ÇëÔÙ´ÎÊäÈëĞÂÃÜÂë");
+			frag_NewPasswordRepeat.setHintText("è¯·å†æ¬¡è¾“å…¥æ–°å¯†ç ");
 			frag_NewPasswordRepeat.setIsPassword(true);
 		}
 	}
-//Ìá½»ĞÂÃÜÂë³É¹¦ºóÌø×ªµ½µÇÂ¼½çÃæ
+//å‡½æ•°åŠŸèƒ½:ä½¿ç”¨Intentè·³è½¬åˆ°LoginActivity
 void goLogin() {
 	Intent itnt = new Intent(getActivity(), LoginActivity.class);
 	startActivity(itnt);

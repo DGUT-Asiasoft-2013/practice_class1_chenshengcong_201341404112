@@ -1,4 +1,4 @@
-package com.example.fragments;
+package com.example.fragments.inputcells;
 
 import com.example.login.R;
 
@@ -38,9 +38,9 @@ public class FragmentPasswordRecoverStep1 extends Fragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		frag_Email.setLabelText("×¢²áÓÊÏä");
+		frag_Email.setLabelText("é‚®ç®±");
 		{
-			frag_Email.setHintText("ÇëÊäÈë×¢²áÊ±µÄÓÊÏä");
+			frag_Email.setHintText("è¯·è¾“å…¥æ³¨å†Œæ—¶çš„è®¤è¯é‚®ç®±");
 		}
 
 	}
@@ -48,12 +48,12 @@ public class FragmentPasswordRecoverStep1 extends Fragment {
 	
 	
 	/*
-	 * ÒÔÏÂµÄ¶«Î÷²»¶®
-	 *1´´½¨Ò»¸ö½Ó¿Ú
-	 *2´´½¨Ò»¸ö´Ë½Ó¿ÚµÄ±äÁ¿
-	 *3±äÁ¿
+	 * ä»¥ä¸‹çš„ä¸œè¥¿ä¸å¤ªæ‡‚
+	 *1åˆ›å»ºä¸€ä¸ªstaticæ¥å£
+	 *2åˆ›å»ºä¸€ä¸ªæ­¤æ¥å£çš„ç±»
+	 *3åˆ›å»ºä¸€ä¸ªæ–¹æ³•,ä½¿ç”¨è¯¥æ¥å£å˜é‡ä½œä¸ºå‚æ•°
 	 */
-	// ´´½¨"ÏÂÒ»²½"°´Å¥µÄ½Ó¿Ú
+	// 
 	public static interface OnGoNextLister {
 		void onGoNext();
 	}

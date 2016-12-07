@@ -1,4 +1,4 @@
-package com.example.fragments;
+package com.example.fragments.inputcells;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class PictureInputCellFragment extends BaseInputFragment {
 	}
 
 	public void onImageViewClicked() {
-		String[] items = { "ÅÄÕÕ", "Ïà²á" };
+		String[] items = { "æ‹ç…§", "ç›¸å†Œ" };
 
 		new AlertDialog.Builder(getActivity()).setTitle(labelText.getText())
 				.setItems(items, new OnClickListener() {
@@ -68,7 +68,7 @@ public class PictureInputCellFragment extends BaseInputFragment {
 						}
 
 					}
-				}).setNegativeButton("È¡Ïû", null).show();
+				}).setNegativeButton("å–æ¶ˆ", null).show();
 	}
 
 	void takePhoto() {

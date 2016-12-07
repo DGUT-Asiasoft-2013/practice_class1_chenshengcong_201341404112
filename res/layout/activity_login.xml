@@ -27,14 +27,14 @@
                 android:id="@+id/input_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                class="com.example.fragments.SimpleTextInputCellFragment"
+                class="com.example.fragments.inputcells.SimpleTextInputCellFragment"
                 tools:layout="@layout/fragment_inputcell_simpletext" />
 
             <fragment
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                class="com.example.fragments.SimpleTextInputCellFragment"
+                class="com.example.fragments.inputcells.SimpleTextInputCellFragment"
                 tools:layout="@layout/fragment_inputcell_simpletext" />
 
             <TextView
@@ -58,7 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="LOGIN"
+                    android:text="登录"
                   
                     android:textColor="@android:color/black" />
 
@@ -67,7 +67,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="REGISTER"
+                    android:text="注册"
              
                     android:textColor="@android:color/black" />
 

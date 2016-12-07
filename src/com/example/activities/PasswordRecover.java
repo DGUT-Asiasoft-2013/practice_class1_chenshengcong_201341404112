@@ -1,8 +1,8 @@
 package com.example.activities;
 
-import com.example.fragments.FragmentPasswordRecoverStep1;
-import com.example.fragments.FragmentPasswordRecoverStep1.OnGoNextLister;
-import com.example.fragments.FragmentPasswordRecoverStep2;
+import com.example.fragments.inputcells.FragmentPasswordRecoverStep1;
+import com.example.fragments.inputcells.FragmentPasswordRecoverStep2;
+import com.example.fragments.inputcells.FragmentPasswordRecoverStep1.OnGoNextLister;
 import com.example.login.R;
 
 import android.app.Activity;
@@ -17,23 +17,23 @@ public class PasswordRecover extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_recover);
-//Îª"ÏÂÒ»²½"°´Å¥µ÷¼Ó¼àÌı½Ó¿Ú
+//ä¸º"ä¸‹ä¸€æ­¥"æŒ‰é’®æ·»åŠ ç›‘å¬æ¥å£å®ç°
 		step1.setOnGoNextLister(new OnGoNextLister() {
 
 			@Override
 			public void onGoNext() {
-				goStep2();//Ìø×ªµ½ÖØÖÃÃÜÂë½çÃæ
+				goStep2();//è·³è½¬åˆ°é‡ç½®å¯†ç Fragment
 
 			}
 		});
 
-		getFragmentManager().beginTransaction().replace(R.id.container, step1).commit();//±ØĞë½«ÊÂÎñÌá½»²Å»áÌø×ªµ½ÖØÖÃÃÜÂë½çÃæ
+		getFragmentManager().beginTransaction().replace(R.id.container, step1).commit();//äº‹åŠ¡å¿…é¡»commitæ‰èƒ½ç”Ÿæ•ˆ
 	}
 
 	void goStep2() {
 		getFragmentManager()
 				.beginTransaction().setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left,
-						R.animator.slide_in_right, R.animator.slide_out_right)//ÉèÖÃ¶¯»­Ğ§¹û
+						R.animator.slide_in_right, R.animator.slide_out_right)//è®¾ç½®åŠ¨ç”»æ•ˆæœ
 				.replace(R.id.container, step2).addToBackStack(null).commit();
 	}
 }

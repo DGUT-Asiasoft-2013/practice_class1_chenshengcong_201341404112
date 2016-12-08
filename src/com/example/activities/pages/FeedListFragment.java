@@ -55,11 +55,11 @@ public class FeedListFragment extends Fragment {
 			View view = null;
 			if (convertView == null) {
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());// 当converView为空时,获取父容器的布局
-				view = inflater.inflate(android.R.layout.simple_list_item_1, null);// 将当前的view设为系统自带的simple_list_item_1;
+				view = inflater.inflate(R.layout.fragment_single_list, null);// 将当前的view设为系统自带的simple_list_item_1;
 			} else {
 				view = convertView;
 			}
-			TextView textView1 = (TextView) view.findViewById(android.R.id.text1);// 安卓自带的textView
+			TextView textView1 = (TextView) view.findViewById(R.id.text_list_message);// 安卓自带的textView
 																					// id
 			textView1.setText("This ROW is " + data[position]);
 

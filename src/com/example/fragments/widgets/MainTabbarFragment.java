@@ -25,7 +25,7 @@ public class MainTabbarFragment extends Fragment {
 		tabNotes = view.findViewById(R.id.tab_notes);
 		tabSearch = view.findViewById(R.id.tab_search);
 		tabMe = view.findViewById(R.id.tab_me);
-		btn_new = (Button) view.findViewById(R.id.btn_new);
+	
 		tabs = new View[] { tabFeeds, tabNotes, tabSearch, tabMe };
 //为每个tabbar条件监听接口
 		for (final View tab : tabs) {
@@ -39,20 +39,7 @@ public class MainTabbarFragment extends Fragment {
 			});
 		}
 		
-		btn_new.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				BeginNewText();
-				
-			}
-
-			private void BeginNewText() {
-				Intent itnt=new Intent(getActivity(), NewTextActivity.class);
-				startActivity(itnt);
-				
-			}
-		});
+	
 
 		return view;
 	}

@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 <FrameLayout android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:background="@android:color/white"
+    android:background="@drawable/naver_bg"
     android:id="@+id/navbar"
     
     >
@@ -16,12 +16,7 @@
         android:textColor="@android:color/black"
          />
     
-    <View 
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-		android:layout_gravity="bottom"
-		android:background="@android:color/darker_gray"        
-        />
+ 
 </FrameLayout>
 <ListView 
     android:id="@+id/list_feeds"

@@ -4,7 +4,11 @@ import com.example.login.R;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.example.activities.pages.FeedListFragment;
 import com.example.activities.pages.MyProfileFragment;
@@ -23,6 +27,7 @@ public class HelloWorldActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_helloworld);
+		Button btn_new = (Button)findViewById(R.id.btn_new);
 		
 		tabbar = (MainTabbarFragment) getFragmentManager().findFragmentById(R.id.frag_tabbar);
 		tabbar.setOnTabSelectedListener(new OnTabSelectedListener() {
@@ -31,6 +36,15 @@ public class HelloWorldActivity extends Activity {
 			public void onTabSelected(int index) {
 				// TODO Auto-generated method stub
 				changeContentFragment(index);
+			}
+		});
+		
+		btn_new.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				  BeginNewText() ;
 			}
 		});
 	}
@@ -60,4 +74,10 @@ public class HelloWorldActivity extends Activity {
 		.replace(R.id.content, newFrag)
 		.commit();
 	}
+	 void BeginNewText() {
+			Intent itnt=new Intent(this, NewTextActivity.class);
+			startActivity(itnt);
+			overridePendingTransition(R.anim.slide_in_bottom,R.anim.none);
+			
+		}
 }

@@ -2,6 +2,7 @@ package com.example.activities;
 
 import java.io.IOException;
 
+import com.example.fragments.inputcells.PictureInputCellFragment;
 import com.example.fragments.inputcells.SimpleTextInputCellFragment;
 import com.example.login.R;
 
@@ -31,6 +32,7 @@ public class RegisterActivity extends Activity {
 	SimpleTextInputCellFragment fragInputCellPasswordRepeat;
 	SimpleTextInputCellFragment fragInputEmail;
 	SimpleTextInputCellFragment fragInputUsername;
+	PictureInputCellFragment fragPicture;
 	Button btn_submit;
 
 	@Override
@@ -48,6 +50,7 @@ public class RegisterActivity extends Activity {
 				.findFragmentById(R.id.input_password_repeat);
 		fragInputEmail = (SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_email);
 		fragInputUsername = (SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_username);
+		fragPicture = (PictureInputCellFragment) getFragmentManager().findFragmentById(R.id.picture_choose);
 
 		// 为"提交"按钮添加监听接口实现
 		btn_submit.setOnClickListener(new OnClickListener() {
@@ -97,32 +100,45 @@ public class RegisterActivity extends Activity {
 	}
 
 	public void onRegister() {
-		String password = fragInputCellPassword.getString(R.id.input_password);
-		String passwordRepeat = fragInputCellPasswordRepeat.getString(R.id.input_new_password_repeat);
+		String password =  fragInputCellPassword.getText();
+		String passwordRepeat =  fragInputCellPasswordRepeat.getText();
 		// 判断两次输入的密码是不是一致,如果不一致,则弹出对话框提示并返回
-		if (!password.equals(passwordRepeat)) {
+		if (!password.equals(passwordRepeat) || password.length()==0) {
 			new AlertDialog.Builder(RegisterActivity.this).setMessage("输入密码不一致!!请确认密码").setIcon(android.R.id.icon1)
 					.setNegativeButton("OK", null).show();
 			return;
 		}
 
-		String email = fragInputEmail.getString(R.id.input_email);
-		String username = fragInputUsername.getString(R.id.input_username);
-		String account = fragInputCellAccount.getString(R.id.input_accout);
-
+		String email = fragInputEmail.getText();
+		String username = fragInputUsername.getText();
+		String account = fragInputCellAccount.getText();
 		// 新建一个progressdialog,在用户点击提交按钮后显示等待
 		final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
 		progressDialog.setMessage("请等待!!");// 设置对话的信息
 		progressDialog.setCancelable(false);// 设置为不可以取消
 		progressDialog.setCanceledOnTouchOutside(false);// 设置为不能因为点击外部而取消
-
+//---------------------------------------
+		//创建存储照片
+		byte[] pngData =fragPicture.getPng();
+		if(pngData!=null)
+		{
+			RequestBody imgBody =RequestBody.create(MediaType.parse("image.png"), pngData);
+			
+		}
+		
+		
 		// 新建请求内容
 		OkHttpClient client = new OkHttpClient();
-		RequestBody requestBody = new MultipartBody.Builder().addFormDataPart("account", account)
-				.addFormDataPart("username", username).addFormDataPart("Email", email)
-				.addFormDataPart("password", password).build();
+		
+		MultipartBody requestBody = new MultipartBody.Builder()
+				.setType(MultipartBody.FORM)
+				.addFormDataPart("account", account)
+				.addFormDataPart("avatar","avatar.png",imgBody )
+				.addFormDataPart("name", username).addFormDataPart("email", email)
+				.addFormDataPart("passwordHash", password).build();
 		Request requst = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/register")
-				.method("POST", requestBody).build();
+				.method("POST", requestBody)
+				.post(requestBody).build();
 
 		// 建立请求
 		client.newCall(requst).enqueue(new Callback() {
@@ -135,7 +151,7 @@ public class RegisterActivity extends Activity {
 					public void run() {
 						progressDialog.dismiss();
 						try {
-							RegisterActivity.this.onResponse(arg0, arg1.message());
+							RegisterActivity.this.onResponse(arg0, arg1.body().string());//
 						} catch (Exception e) {
 
 							e.printStackTrace();

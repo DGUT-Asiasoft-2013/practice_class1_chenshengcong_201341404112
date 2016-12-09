@@ -1,5 +1,7 @@
 package com.example.fragments.inputcells;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -8,10 +10,12 @@ import com.example.login.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Video.Media;
@@ -28,6 +32,7 @@ public class PictureInputCellFragment extends BaseInputFragment {
 
 	final int RESULTCODE_CAMERA = 1;
 	final int RESULTCODE_ALBUM = 0;
+	byte[] pngData;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,24 +56,23 @@ public class PictureInputCellFragment extends BaseInputFragment {
 	public void onImageViewClicked() {
 		String[] items = { "拍照", "相册" };
 
-		new AlertDialog.Builder(getActivity()).setTitle(labelText.getText())
-				.setItems(items, new OnClickListener() {
+		new AlertDialog.Builder(getActivity()).setTitle(labelText.getText()).setItems(items, new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							takePhoto();
-							break;
-						case 1:
-							pickFormAlbum();
-							break;
-						default:
-							break;
-						}
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case 0:
+					takePhoto();
+					break;
+				case 1:
+					pickFormAlbum();
+					break;
+				default:
+					break;
+				}
 
-					}
-				}).setNegativeButton("取消", null).show();
+			}
+		}).setNegativeButton("取消", null).show();
 	}
 
 	void takePhoto() {
@@ -85,19 +89,18 @@ public class PictureInputCellFragment extends BaseInputFragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode == Activity.RESULT_CANCELED)
-		{
+		if (resultCode == Activity.RESULT_CANCELED) {
 			return;
 		}
-		if(requestCode==RESULTCODE_CAMERA)
-		{
-		Bitmap bmp=(Bitmap)data.getExtras().get("data");
-		imageView.setImageBitmap(bmp);
-		}
-		else if(requestCode==RESULTCODE_ALBUM){
+		if (requestCode == RESULTCODE_CAMERA) {
+			Bitmap bmp = (Bitmap) data.getExtras().get("data");
+			imageView.setImageBitmap(bmp);
+			saveImg(bmp);
+		} else if (requestCode == RESULTCODE_ALBUM) {
 			try {
 				Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
 				imageView.setImageBitmap(bmp);
+				saveImg(bmp);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -121,4 +124,18 @@ public class PictureInputCellFragment extends BaseInputFragment {
 		labelText.setHint(hintText);
 	}
 
+	public byte[] getPng(){
+		return pngData;
+	}
+
+	public void saveImg(Bitmap bmp)
+	{
+		if(bmp==null)
+		{
+			return;
+		}
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		pngData =baos.toByteArray();
+	}
 }

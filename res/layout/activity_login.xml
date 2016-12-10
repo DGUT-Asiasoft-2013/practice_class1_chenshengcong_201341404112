@@ -52,6 +52,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal" >
+                 <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="注册"
+             
+                    android:textColor="@android:color/black" />
 
                 <Button
                     android:id="@+id/btn_login"
@@ -62,14 +70,7 @@
                   
                     android:textColor="@android:color/black" />
 
-                <Button
-                    android:id="@+id/btn_register"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="注册"
-             
-                    android:textColor="@android:color/black" />
+               
 
             </LinearLayout>
         </LinearLayout>

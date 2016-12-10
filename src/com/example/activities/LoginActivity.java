@@ -1,17 +1,28 @@
 package com.example.activities;
 
+import java.io.IOException;
+
 import com.example.fragments.inputcells.SimpleTextInputCellFragment;
 import com.example.login.R;
 
 import android.accounts.Account;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LoginActivity extends Activity {
 
@@ -33,7 +44,8 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				goWelcome();
+				// goWelcome();
+				onLogin();
 
 			}
 		});
@@ -55,7 +67,6 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				goRecoverPassword();
-
 			}
 		});
 
@@ -64,6 +75,86 @@ public class LoginActivity extends Activity {
 	void goWelcome() {
 		Intent itnt = new Intent(this, HelloWorldActivity.class);
 		startActivity(itnt);
+	}
+
+	void onLogin() {
+		String inputAccount = fragInputCellAccount.getText();
+		String inputPassword = fragInputCellPassword.getText();
+		final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+		progressDialog.setMessage("登陆中!!");// 设置对话的信息
+		progressDialog.setCancelable(false);// 设置为不可以取消
+		progressDialog.setCanceledOnTouchOutside(false);// 设置为不能因为点击外部而取消
+		// ---------------------------------------
+
+		// 新建请求内容
+		OkHttpClient client = new OkHttpClient();
+
+		MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+				.addFormDataPart("account", inputAccount).addFormDataPart("passwordHash", inputAccount);
+		
+		
+		Request requst = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/login")
+				.method("post", null)
+				.post(requestBody.build()).build();
+		
+		client.newCall(requst).enqueue(new Callback() {
+			
+			@Override
+			public void onResponse(final Call arg0, final Response arg1) throws IOException {
+				LoginActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+						
+						try {
+							LoginActivity.this.onResponse(arg0, arg1.body().string());
+						} catch (IOException e) {
+						
+							e.printStackTrace();
+							LoginActivity.this.onFailure(arg0, e);
+						}
+					}
+				});
+			}
+			
+			@Override
+			public void onFailure(final Call arg0, final IOException arg1) {
+				LoginActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+						onFailure(arg0, arg1);
+						
+					}
+				});
+			}
+		});
+	}	
+		
+		
+
+	// 成功响应,显示注册成功对话窗口,并退出注册界面
+	void onResponse(Call arg0, String response) {
+	//	Toast.makeText(this, "登录成功"+response, Toast.LENGTH_SHORT).show();;
+		new AlertDialog.Builder(this).setTitle("登录成功").setMessage(response)
+		.setPositiveButton("好", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+				
+			}
+		}).show();
+		goWelcome();
+	}
+
+	// 请求失败,显示注册失败窗口,
+	void onFailure(Call arg0, Exception e) {
+		new AlertDialog.Builder(this).setTitle("登录失败").setMessage(e.getLocalizedMessage()).setNegativeButton("重试", null)
+				.show();
+
 	}
 
 	void goRegister() {

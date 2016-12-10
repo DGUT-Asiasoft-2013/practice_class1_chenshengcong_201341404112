@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -118,27 +119,28 @@ public class RegisterActivity extends Activity {
 		progressDialog.setCancelable(false);// 设置为不可以取消
 		progressDialog.setCanceledOnTouchOutside(false);// 设置为不能因为点击外部而取消
 //---------------------------------------
-		//创建存储照片
-		byte[] pngData =fragPicture.getPng();
-		if(pngData!=null)
-		{
-			RequestBody imgBody =RequestBody.create(MediaType.parse("image.png"), pngData);
-			
-		}
+		
 		
 		
 		// 新建请求内容
 		OkHttpClient client = new OkHttpClient();
 		
-		MultipartBody requestBody = new MultipartBody.Builder()
+		MultipartBody.Builder requestBody = new MultipartBody.Builder()
 				.setType(MultipartBody.FORM)
 				.addFormDataPart("account", account)
-				.addFormDataPart("avatar","avatar.png",imgBody )
+				//.addFormDataPart("avatar", "avatar.png", imgBody)
 				.addFormDataPart("name", username).addFormDataPart("email", email)
-				.addFormDataPart("passwordHash", password).build();
+				.addFormDataPart("passwordHash", password);
+		//创建存储照片
+				byte[] pngData =fragPicture.getPng();
+				if(pngData!=null)
+				{
+				final	RequestBody imgBody =RequestBody.create(MediaType.parse("image.png"), pngData);
+				requestBody.addFormDataPart("avatar", "avatar.png", imgBody);
+				}
 		Request requst = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/register")
-				.method("POST", requestBody)
-				.post(requestBody).build();
+				.method("post", null)
+				.post(requestBody.build()).build();
 
 		// 建立请求
 		client.newCall(requst).enqueue(new Callback() {

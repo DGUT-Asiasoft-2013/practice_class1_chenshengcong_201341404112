@@ -2,9 +2,13 @@ package com.example.activities;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.fragments.inputcells.PictureInputCellFragment;
 import com.example.fragments.inputcells.SimpleTextInputCellFragment;
 import com.example.login.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,6 +20,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import model.MD5;
+import model.User;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -101,14 +107,16 @@ public class RegisterActivity extends Activity {
 	}
 
 	public void onRegister() {
-		String password =  fragInputCellPassword.getText();
-		String passwordRepeat =  fragInputCellPasswordRepeat.getText();
+		String password = fragInputCellPassword.getText();
+		String passwordRepeat = fragInputCellPasswordRepeat.getText();
 		// 判断两次输入的密码是不是一致,如果不一致,则弹出对话框提示并返回
-		if (!password.equals(passwordRepeat) || password.length()==0) {
+		if (!password.equals(passwordRepeat) || password.length() == 0) {
 			new AlertDialog.Builder(RegisterActivity.this).setMessage("输入密码不一致!!请确认密码").setIcon(android.R.id.icon1)
 					.setNegativeButton("OK", null).show();
 			return;
 		}
+//用md5加密密码
+		//String passwordHash = MD5.getMD5(password);
 
 		String email = fragInputEmail.getText();
 		String username = fragInputUsername.getText();
@@ -118,29 +126,25 @@ public class RegisterActivity extends Activity {
 		progressDialog.setMessage("请等待!!");// 设置对话的信息
 		progressDialog.setCancelable(false);// 设置为不可以取消
 		progressDialog.setCanceledOnTouchOutside(false);// 设置为不能因为点击外部而取消
-//---------------------------------------
-		
-		
+		// ---------------------------------------
+
 		
 		// 新建请求内容
 		OkHttpClient client = new OkHttpClient();
-		
-		MultipartBody.Builder requestBody = new MultipartBody.Builder()
-				.setType(MultipartBody.FORM)
+
+		MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
 				.addFormDataPart("account", account)
-				//.addFormDataPart("avatar", "avatar.png", imgBody)
+				// .addFormDataPart("avatar", "avatar.png", imgBody)
 				.addFormDataPart("name", username).addFormDataPart("email", email)
 				.addFormDataPart("passwordHash", password);
-		//创建存储照片
-				byte[] pngData =fragPicture.getPng();
-				if(pngData!=null)
-				{
-				final	RequestBody imgBody =RequestBody.create(MediaType.parse("image.png"), pngData);
-				requestBody.addFormDataPart("avatar", "avatar.png", imgBody);
-				}
+		// 创建存储照片
+		byte[] pngData = fragPicture.getPng();
+		if (pngData != null) {
+			final RequestBody imgBody = RequestBody.create(MediaType.parse("image.png"), pngData);
+			requestBody.addFormDataPart("avatar", "avatar.png", imgBody);
+		}
 		Request requst = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/register")
-				.method("post", null)
-				.post(requestBody.build()).build();
+				.method("post", null).post(requestBody.build()).build();
 
 		// 建立请求
 		client.newCall(requst).enqueue(new Callback() {
@@ -152,6 +156,8 @@ public class RegisterActivity extends Activity {
 					@Override
 					public void run() {
 						progressDialog.dismiss();
+					
+						
 						try {
 							RegisterActivity.this.onResponse(arg0, arg1.body().string());//
 						} catch (Exception e) {
@@ -189,7 +195,6 @@ public class RegisterActivity extends Activity {
 						finish();
 					}
 				}).show();
-
 	}
 
 	// 请求失败,显示注册失败窗口,
@@ -197,4 +202,7 @@ public class RegisterActivity extends Activity {
 		new AlertDialog.Builder(this).setTitle("请求失败").setMessage(e.getLocalizedMessage()).setNegativeButton("重试", null)
 				.show();
 	}
+	
+	
+	
 }

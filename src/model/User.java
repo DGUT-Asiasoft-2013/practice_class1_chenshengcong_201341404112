@@ -1,3 +1,4 @@
+package model;
 
 public class User {
 	String account;
@@ -5,6 +6,17 @@ public class User {
 	String name;
 	String avatar;
 	String email;
+	Integer id;
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 
 	public String getAccount() {

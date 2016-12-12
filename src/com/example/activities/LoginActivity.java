@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import model.HttpServer;
 import model.User;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -88,7 +89,7 @@ public class LoginActivity extends Activity {
 		// ---------------------------------------
 
 		// 新建请求内容
-		OkHttpClient client = new OkHttpClient();
+		OkHttpClient client = HttpServer.getSharedClient();
 
 		MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
 				.addFormDataPart("account", inputAccount).addFormDataPart("passwordHash", inputPassword);

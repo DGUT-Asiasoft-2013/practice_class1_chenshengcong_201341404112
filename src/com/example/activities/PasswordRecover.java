@@ -86,6 +86,7 @@ public class PasswordRecover extends Activity {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				// TODO Auto-generated method stub
+
 				final Boolean b ;
 				ObjectMapper oMapper = new ObjectMapper();
 				b=oMapper.readValue(arg1.body().string(), Boolean.class);
@@ -118,11 +119,13 @@ public class PasswordRecover extends Activity {
 					}
 				});
 		
+
 			}
 		});
 	}
 	
 	public void ResponeSucceed(){
+
 		Toast.makeText(this, "重置密码成功", Toast.LENGTH_SHORT).show();
 		Log.d("mimac", "修改密码成功啦");
 		finish();
@@ -130,6 +133,7 @@ public class PasswordRecover extends Activity {
 	public void ResponeFailure(){
 		Toast.makeText(this, "重置密码失败", Toast.LENGTH_SHORT).show();
 		
+
 	}
 	
 	//函数功能:使用Intent跳转到LoginActivity

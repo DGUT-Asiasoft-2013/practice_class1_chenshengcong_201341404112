@@ -59,8 +59,7 @@
             <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="50.73"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:gravity="top|left"
@@ -68,7 +67,6 @@
                 android:padding="8dp" >
             </EditText>
         </LinearLayout>
-
     </ScrollView>
 
 </FrameLayout>

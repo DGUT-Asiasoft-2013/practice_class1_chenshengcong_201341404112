@@ -47,6 +47,7 @@ public class MainTabbarFragment extends Fragment {
 	}
 
 	OnTabSelectedListener onTabSelectedListener;
+	public int getSelectedIndex;
 
 	public void setOnTabSelectedListener(OnTabSelectedListener onTabSelectedListener) {
 		this.onTabSelectedListener = onTabSelectedListener;
@@ -75,4 +76,13 @@ public class MainTabbarFragment extends Fragment {
 			onTabSelectedListener.onTabSelected(selectedIndex);
 		}
 	}
+	
+	//获取选中的Tabbar的index
+	public int getSelectedIndex(){
+		 		for(int i=0; i<tabs.length; i++){
+		 			if(tabs[i].isSelected()) return i;
+		 		}
+		 		
+		 		return -1;
+		 	}
 }

@@ -2,6 +2,7 @@ package com.example.activities.pages;
 
 import java.io.IOException;
 
+import com.example.fragments.widgets.AvatarView;
 import com.example.login.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -35,7 +35,7 @@ public class FragmentPasswordRecoverStep2 extends Fragment {
  SimpleTextInputCellFragment frag_CheckCode;
  SimpleTextInputCellFragment frag_NewPassword;
  SimpleTextInputCellFragment frag_NewPasswordRepeat;
- static String password;
+
  View view;
 
  @Override
@@ -47,7 +47,7 @@ public class FragmentPasswordRecoverStep2 extends Fragment {
 	 				frag_NewPassword=(SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_new_password);
 	 				frag_NewPasswordRepeat=(SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_new_password_repeat);
 	 			
-	 				password = frag_NewPassword.getText();
+	 			
 	 			
 	 			}
 	 //为重置按钮添加监听接口
@@ -58,8 +58,8 @@ public class FragmentPasswordRecoverStep2 extends Fragment {
 					
 							//goLogin();
 							//goPasswordRecover();
-						goSubmit();
-						
+						//goSubmit();
+						onSubmitClicked();
 					}
 				});
 	 
@@ -93,73 +93,33 @@ void goLogin() {
 	
 }
 
-public String getNewPassword(){
-	return password;
+
+
+public static interface OnSubmitClickedListener{
+	void onSubmitClicked();
 }
-	
 
+OnSubmitClickedListener onSubmitClickedListener;
 
-void goSubmit() {
-	if (onGoSubmitLister != null) {
-		onGoSubmitLister.onGoSubmit();
+public void setOnSubmitClickedListener(OnSubmitClickedListener onSubmitClickedListener) {
+	this.onSubmitClickedListener = onSubmitClickedListener;
+}
+
+void onSubmitClicked(){
+	if(frag_NewPassword.getText().equals(frag_NewPasswordRepeat.getText())){
+		if(onSubmitClickedListener!=null){
+			onSubmitClickedListener.onSubmitClicked();
+		}
+	}else{
+		new AlertDialog.Builder(getActivity())
+		.setMessage("输入密码不一致")
+		.show();
 	}
 }
-public static interface OnGoSubmitLister {
-	void onGoSubmit();
-}
 
-OnGoSubmitLister onGoSubmitLister;//
-
-public void setOnGoSubmitLister(OnGoSubmitLister onGoSubmitListener) {
-	this.onGoSubmitLister = onGoSubmitListener;
-
-}
-
-
-public void goPasswordRecover(){
-	//email.setOnDataTransmission(new OnDataTransmisson());
-	
-	OkHttpClient client = HttpServer.getSharedClient();
-
-	MultipartBody.Builder requestBody = new MultipartBody.Builder()
-			.addFormDataPart("email",step1.getEmail()).addFormDataPart("passwordHash",step2.getNewPassword() );
-	
-
-	Request request = HttpServer.requestBuilderWithApi("passwordrecover")
-			.method("POST", null)
-			.post(requestBody.build())
-			.build();
-	
-	client.newCall(request).enqueue(new Callback() {
-		
-		@Override
-		public void onResponse( Call arg0, Response arg1) throws IOException {
-		Boolean b ;
-		ObjectMapper oMapper = new ObjectMapper();
-		b=oMapper.readValue(arg1.body().string(), Boolean.class);
-		if(b==true)
-		{
-			ResponeSucceed();
-		}
-		else{
-			ResponeFailure();
-		}
-		}	
-		
-		@Override
-		public void onFailure(Call arg0, IOException arg1) {
-			
-			ResponeFailure();
-		}
-	});
-	
-}
-public void ResponeSucceed(){
-	new AlertDialog.Builder(PasswordRecover.this).setTitle("重设密码成功").setMessage("重置密码成功").setPositiveButton("确定", null).show();
-	//goLogin();
-}
-public void ResponeFailure(){
-	new AlertDialog.Builder(PasswordRecover.this).setTitle("重设密码失败").setMessage("重置密码失败").setNegativeButton("确定", null).show();
+//为外部提供获取输入的新密码功能
+public String getNewPassword(){
+	return frag_NewPassword.getText();
 }
 
 

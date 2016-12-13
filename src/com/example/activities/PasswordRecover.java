@@ -6,15 +6,18 @@ import org.json.JSONObject;
 
 import com.example.fragments.inputcells.FragmentPasswordRecoverStep1;
 import com.example.fragments.inputcells.FragmentPasswordRecoverStep2;
-import com.example.fragments.inputcells.FragmentPasswordRecoverStep2.OnGoSubmitLister;
+import com.example.fragments.inputcells.FragmentPasswordRecoverStep2.OnSubmitClickedListener;
 import com.example.fragments.inputcells.FragmentPasswordRecoverStep1.OnGoNextLister;
 import com.example.login.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.IconMarginSpan;
+import android.util.Log;
+import android.widget.Toast;
 import model.HttpServer;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,7 +48,15 @@ public class PasswordRecover extends Activity {
 			}
 		});
 		
-		
+		step2.setOnSubmitClickedListener(new OnSubmitClickedListener() {
+			
+			@Override
+			public void onSubmitClicked() {
+				// TODO Auto-generated method stub
+				goSubmit();
+				
+			}
+		} );
 
 		getFragmentManager().beginTransaction().replace(R.id.container, step1).commit();//事务必须commit才能生效
 		
@@ -62,7 +73,69 @@ public class PasswordRecover extends Activity {
 			
 		
 	}
+	void goSubmit(){
+		OkHttpClient client = HttpServer.getSharedClient();
+		MultipartBody body = new MultipartBody.Builder()
+				.addFormDataPart("email", step1.getEmail())
+				.addFormDataPart("passwordHash",step2.getNewPassword())
+				.build();
+		Request request = HttpServer.requestBuilderWithApi("passwordrecover").post(body).build();
+				
+		client.newCall(request).enqueue(new Callback() {
+			
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				// TODO Auto-generated method stub
+				final Boolean b ;
+				ObjectMapper oMapper = new ObjectMapper();
+				b=oMapper.readValue(arg1.body().string(), Boolean.class);
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if(b==true)
+						{
+							ResponeSucceed();
+						}
+						else{
+							ResponeFailure();
+						}
+					}
+				});
+			
+				
+			}
+			
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+					
+						ResponeFailure();
+					}
+				});
+		
+			}
+		});
+	}
 	
+	public void ResponeSucceed(){
+		Toast.makeText(this, "重置密码成功", Toast.LENGTH_SHORT).show();
+		Log.d("mimac", "修改密码成功啦");
+		finish();
+	}
+	public void ResponeFailure(){
+		Toast.makeText(this, "重置密码失败", Toast.LENGTH_SHORT).show();
+		
+	}
 	
-	
+	//函数功能:使用Intent跳转到LoginActivity
+	void goLogin() {
+		Intent itnt = new Intent(this, LoginActivity.class);
+		startActivity(itnt);
+		
+	}
 }

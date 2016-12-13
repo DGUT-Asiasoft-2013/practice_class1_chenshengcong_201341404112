@@ -16,15 +16,15 @@ import android.widget.TextView;
 public class FragmentPasswordRecoverStep1 extends Fragment {
  SimpleTextInputCellFragment frag_Email;
 	View view;
-	static String email;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_password_recover_step1, null);
 			frag_Email = (SimpleTextInputCellFragment) getFragmentManager().findFragmentById(R.id.input_email);
-			 email = frag_Email.getText();
-			// getEmail(email);
+		
+	
 			view.findViewById(R.id.btn_goNext).setOnClickListener(new View.OnClickListener() {
 
 				@Override
@@ -79,12 +79,12 @@ public class FragmentPasswordRecoverStep1 extends Fragment {
 	{
 		this.onGetEmailListener = onGetEmailListener;
 	}
-	public static String getEmail(){
-		return email;
-	}
 
-	
-	
+
+	//创建方法为外部提供获取输入的邮箱地址功能
+	public String getEmail(){
+		return frag_Email.getText();
+	}
 
 	
 }

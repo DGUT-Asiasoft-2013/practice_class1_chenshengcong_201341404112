@@ -4,62 +4,98 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+   <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal" >
+
     <LinearLayout
         android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:orientation="vertical" >
+        android:layout_height="50dp" 
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:orientation="vertical" >
+        <com.example.fragments.widgets.AvatarView
+            android:id="@+id/avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            />
 
-            <com.example.fragments.widgets.AvatarView
-                android:id="@+id/feed_avatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-
-            <TextView
-                android:id="@+id/text_feed_author_name"
-                android:layout_width="40dp"
-                android:layout_height="10dp"
-                android:gravity="center"
-                android:text="昵称"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/text_feed_edit_time"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:gravity="right|bottom"
-                android:text="日期"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/text_feed_list_message"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="start|left|center_vertical"
-                android:padding="2dp"
-                android:text="内容"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/text_feed_author_name"
+            android:layout_width="40dp"
+            android:layout_height="10dp"
+            android:gravity="center"
+            android:text="昵称" 
+            android:textSize="10sp"
+            />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_feed_comment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:divider="@android:color/black"
-        android:dividerHeight="1px" >
-    </ListView>
+        android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical"
+         >
+
+        <TextView
+            android:id="@+id/text_feed_edit_time"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:text="日期"
+            android:textSize="10sp"
+            android:gravity="right|bottom" />
+
+        <TextView
+            android:id="@+id/text_feed_list_message"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="start|left|center_vertical"
+            android:text="内容"
+            android:textSize="12sp"
+            android:padding="2dp" />
+    </LinearLayout>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_zan"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="点赞" />
+
+        <Button
+            android:id="@+id/btn_colletion"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="收藏" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/edit_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:inputType="textMultiLine"
+            android:hint="添加评论" />
+
+        <Button
+            android:id="@+id/btn_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:text="评论" />
+    </LinearLayout>
 
 </LinearLayout>

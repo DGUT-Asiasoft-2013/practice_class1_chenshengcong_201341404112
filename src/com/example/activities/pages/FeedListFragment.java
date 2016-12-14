@@ -132,18 +132,17 @@ public class FeedListFragment extends Fragment {
 	};
 
 	public void onItemClicked(int position) {
-		String text = data.get(position).getText();
+		
 		Article article =data.get(position);
 		String authorName = data.get(position).getAuthorName();
 		
 		SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String editDate = dateFormater.format(data.get(position).getEditDate());//得到文章editDate并格式化为年-月-日 时:分:秒形式
-		//dateFormater.format(editDate);
+		
 		Intent itnt = new Intent(getActivity(), FeedContextActivity.class);
-		itnt.putExtra("authorName", authorName);
-		itnt.putExtra("text", text);
+	
 		itnt.putExtra("editDate", editDate);
-	//	itnt.putExtra("atricle", article);
+		itnt.putExtra("article", article);
 		startActivity(itnt);
 	}
 

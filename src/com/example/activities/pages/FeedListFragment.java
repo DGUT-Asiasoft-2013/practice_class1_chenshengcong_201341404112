@@ -1,6 +1,8 @@
 package com.example.activities.pages;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -64,7 +66,7 @@ public class FeedListFragment extends Fragment {
 				}
 			});
 
-			btnLoadMore.setOnClickListener(new OnClickListener() {
+			btnLoadMore.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -91,13 +93,18 @@ public class FeedListFragment extends Fragment {
 			View view = null;
 			if (convertView == null) {
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());// 当converView为空时,获取父容器的布局
-				view = inflater.inflate(R.layout.fragment_single_list, null);// 将当前的view设为系统自带的simple_list_item_1;
+				view = inflater.inflate(R.layout.fragment_single_list, null);// 将当前的view;
 			} else {
 				view = convertView;
 			}
-			TextView textView1 = (TextView) view.findViewById(R.id.text_list_message);// 安卓自带的textViewid
+			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);// 
+			TextView textAuthorName = (TextView) view.findViewById(R.id.text_author_name);
+			TextView textEditTime = (TextView) view.findViewById(R.id.text_edit_time);
 			Article article = data.get(position);
-			textView1.setText(article.getAuthorName() + " : " + article.getText());
+			textMessage.setText(article.getAuthorName() + " : " + article.getText());
+			textAuthorName.setText(article.getAuthorName());
+			SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			textEditTime.setText(dateFormater.format(article.getEditDate()));
 			//avatar.load(HttpServer.serverAddress + article.getAuthorAvatar());
 			return view;
 		}
@@ -126,9 +133,17 @@ public class FeedListFragment extends Fragment {
 
 	public void onItemClicked(int position) {
 		String text = data.get(position).getText();
+		Article article =data.get(position);
+		String authorName = data.get(position).getAuthorName();
+		
+		SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String editDate = dateFormater.format(data.get(position).getEditDate());//得到文章editDate并格式化为年-月-日 时:分:秒形式
+		//dateFormater.format(editDate);
 		Intent itnt = new Intent(getActivity(), FeedContextActivity.class);
-
+		itnt.putExtra("authorName", authorName);
 		itnt.putExtra("text", text);
+		itnt.putExtra("editDate", editDate);
+	//	itnt.putExtra("atricle", article);
 		startActivity(itnt);
 	}
 
@@ -186,27 +201,39 @@ public class FeedListFragment extends Fragment {
 					public void run() {
 						btnLoadMore.setEnabled(true);
 					
-						textLoadMore.setText("加载更多");
+						
 					}
 				});
 
 				try{
-					Pages<Article> feeds = new ObjectMapper().readValue(arg1.body().string(), new TypeReference<Pages<Article>>() {});
+					final	Pages<Article> feeds = new ObjectMapper().readValue(arg1.body().string(), new TypeReference<Pages<Article>>() {});
 					if(feeds.getNumber()>page){
-						if(data==null){
-							data = feeds.getContent();
-						}else{
-							data.addAll(feeds.getContent());
-						}
-						page = feeds.getNumber();
+						
 						
 						getActivity().runOnUiThread(new Runnable() {
 							public void run() {
+								textLoadMore.setText("加载更多");
+								if(data==null){
+									data = feeds.getContent();
+								}else{
+									data.addAll(feeds.getContent());
+								}
+								page = feeds.getNumber();
 								listAdapter.notifyDataSetChanged();
 							}
 						});
 					}
-				}catch(Exception ex){
+					/*else{
+
+						getActivity().runOnUiThread(new Runnable() {
+							public void run() {
+								textLoadMore.setText("没有更多了");
+								listAdapter.notifyDataSetChanged();
+					}
+						});
+					}*/
+				}
+				catch(Exception ex){
 					ex.printStackTrace();
 				}
 
@@ -219,7 +246,7 @@ public class FeedListFragment extends Fragment {
 					@Override
 					public void run() {
 						btnLoadMore.setEnabled(true);
-						textLoadMore.setText("加载更多");
+						textLoadMore.setText("没有更多了");
 					}
 				});
 			}

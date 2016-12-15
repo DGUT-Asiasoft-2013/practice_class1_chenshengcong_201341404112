@@ -41,7 +41,7 @@ public class FeedListFragment extends Fragment {
 	View view;
 	ListView feedsList;
 	List<Article> data;
-	int page=0;
+	int page = 0;
 	View btnLoadMore;
 	TextView textLoadMore;
 	AvatarView avatar;
@@ -52,7 +52,7 @@ public class FeedListFragment extends Fragment {
 			view = inflater.inflate(R.layout.fragment_page_feed_list, null);
 			btnLoadMore = inflater.inflate(R.layout.widget_load_more, null);
 			textLoadMore = (TextView) btnLoadMore.findViewById(R.id.text);
-		
+
 			ListView feedsList = (ListView) view.findViewById(R.id.list_feeds);// 绑定feeds页面中的ListView
 			feedsList.addFooterView(btnLoadMore);
 			feedsList.setAdapter(listAdapter);
@@ -97,7 +97,7 @@ public class FeedListFragment extends Fragment {
 			} else {
 				view = convertView;
 			}
-			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);// 
+			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);//
 			TextView textAuthorName = (TextView) view.findViewById(R.id.text_author_name);
 			TextView textEditTime = (TextView) view.findViewById(R.id.text_edit_time);
 			Article article = data.get(position);
@@ -105,7 +105,8 @@ public class FeedListFragment extends Fragment {
 			textAuthorName.setText(article.getAuthorName());
 			SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			textEditTime.setText(dateFormater.format(article.getEditDate()));
-			//avatar.load(HttpServer.serverAddress + article.getAuthorAvatar());
+			// avatar.load(HttpServer.serverAddress +
+			// article.getAuthorAvatar());
 			return view;
 		}
 
@@ -132,15 +133,16 @@ public class FeedListFragment extends Fragment {
 	};
 
 	public void onItemClicked(int position) {
-		
-		Article article =data.get(position);
+
+		Article article = data.get(position);
 		String authorName = data.get(position).getAuthorName();
-		
+
 		SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String editDate = dateFormater.format(data.get(position).getEditDate());//得到文章editDate并格式化为年-月-日 时:分:秒形式
-		
+		String editDate = dateFormater.format(data.get(position).getEditDate());// 得到文章editDate并格式化为年-月-日
+																				// 时:分:秒形式
+
 		Intent itnt = new Intent(getActivity(), FeedContextActivity.class);
-	
+
 		itnt.putExtra("editDate", editDate);
 		itnt.putExtra("article", article);
 		startActivity(itnt);
@@ -157,7 +159,6 @@ public class FeedListFragment extends Fragment {
 				final Pages<Article> pageData = new ObjectMapper().readValue(arg1.body().string(),
 						new TypeReference<Pages<Article>>() {
 						});
-				
 
 				getActivity().runOnUiThread(new Runnable() {
 
@@ -189,7 +190,7 @@ public class FeedListFragment extends Fragment {
 		btnLoadMore.setEnabled(false);
 		textLoadMore.setText("载入中…");
 		OkHttpClient client = HttpServer.getSharedClient();
-		Request request = HttpServer.requestBuilderWithApi("feeds/" + (page+ 1)).get().build();
+		Request request = HttpServer.requestBuilderWithApi("feeds/" + (page + 1)).get().build();
 		client.newCall(request).enqueue(new Callback() {
 
 			@Override
@@ -199,22 +200,22 @@ public class FeedListFragment extends Fragment {
 					@Override
 					public void run() {
 						btnLoadMore.setEnabled(true);
-					
-						
+
 					}
 				});
 
-				try{
-					final	Pages<Article> feeds = new ObjectMapper().readValue(arg1.body().string(), new TypeReference<Pages<Article>>() {});
-					if(feeds.getNumber()>page){
-						
-						
+				try {
+					final Pages<Article> feeds = new ObjectMapper().readValue(arg1.body().string(),
+							new TypeReference<Pages<Article>>() {
+							});
+					if (feeds.getNumber() > page) {
+
 						getActivity().runOnUiThread(new Runnable() {
 							public void run() {
 								textLoadMore.setText("加载更多");
-								if(data==null){
+								if (data == null) {
 									data = feeds.getContent();
-								}else{
+								} else {
 									data.addAll(feeds.getContent());
 								}
 								page = feeds.getNumber();
@@ -222,17 +223,16 @@ public class FeedListFragment extends Fragment {
 							}
 						});
 					}
-					/*else{
+					else {
 
 						getActivity().runOnUiThread(new Runnable() {
 							public void run() {
 								textLoadMore.setText("没有更多了");
 								listAdapter.notifyDataSetChanged();
-					}
+							}
 						});
-					}*/
-				}
-				catch(Exception ex){
+					}
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 

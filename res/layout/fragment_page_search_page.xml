@@ -3,10 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout 
+        android:layout_gravity="top"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal" >
+    <EditText 
+        android:id="@+id/edit_search_article"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:hint="搜索文章"
+        
+        />
+    
+    <Button 
+        android:id="@+id/btn_search_article"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:text="搜索"
+        
+        />
+    
+
+</LinearLayout>
+    
+    <ListView
+        android:id="@+id/list_search_article"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="SEARCH" />
+        android:layout_marginTop="44dp"
+        android:divider="@android:color/black"
+        android:dividerHeight="1px" >
+    </ListView>
+    
 
 </FrameLayout>

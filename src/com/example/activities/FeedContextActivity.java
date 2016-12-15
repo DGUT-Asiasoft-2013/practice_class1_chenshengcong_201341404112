@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class FeedContextActivity extends Activity {
 	EditText editComment;
 	static String CommentText;
 	int page = 0;
+	Button btnLikes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class FeedContextActivity extends Activity {
 		btnComment = (Button) findViewById(R.id.btn_comment);
 		editComment = (EditText) findViewById(R.id.edit_comment);
 
+		btnLikes = (Button) findViewById(R.id.btn_likes);
 		textFeedAuthorName.setText(getIntent().getStringExtra("authorName"));
 		textFeedEditDate.setText(getIntent().getStringExtra("editDate"));
 		article = (Article) getIntent().getSerializableExtra("article");
@@ -67,12 +70,21 @@ public class FeedContextActivity extends Activity {
 
 		// listComment.addFooterView(btnLoadMore);
 		listComment.setAdapter(listCommentAdapter);
-
+//为评论按钮添加监听接口
 		btnComment.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				addComment();
+			}
+		});
+		
+		//为点赞按钮添加接口
+		btnLikes.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				toggleLikes();
 			}
 		});
 
@@ -120,10 +132,59 @@ public class FeedContextActivity extends Activity {
 				return commentData.size();
 		}
 	};
-
+	
+	void reloadLikes(){
+		Request request = HttpServer.requestBuilderWithApi("/article/"+article.getId()+"/likes")
+				.get().build();
+		
+		HttpServer.getSharedClient().newCall(request).enqueue(new Callback() {
+			
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				try{
+					String responseString = arg1.body().string();
+					final Integer count = new ObjectMapper().readValue(responseString, Integer.class);
+					
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							onReloadLikesResult(count);
+						}
+					});
+				}catch (Exception e) {
+					e.printStackTrace();
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							onReloadLikesResult(0);
+						}
+					});
+				}
+			}
+			
+			@Override
+			public void onFailure(Call arg0, IOException e) {
+				e.printStackTrace();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						onReloadLikesResult(0);
+					}
+				});
+			}
+		});
+	}
+	void onReloadLikesResult(int count){
+		if(count>0){
+			btnLikes.setText("赞("+count+")");
+		}else{
+			btnLikes.setText("赞");
+		}
+	}
 	// 重新加载评论的方法
 	void reloadComment() {
-
+		reloadLikes();
+		checkLiked();
 		OkHttpClient client = HttpServer.getSharedClient();
 
 		Request request = HttpServer.requestBuilderWithApi("article/" + article.getId() + "/comments").get().build();
@@ -166,6 +227,52 @@ public class FeedContextActivity extends Activity {
 
 	}
 
+	 void checkLiked() {
+		 Request request = HttpServer.requestBuilderWithApi("article/"+article.getId()+"/isliked").get().build();
+			HttpServer.getSharedClient().newCall(request).enqueue(new Callback() {
+				@Override
+				public void onResponse(Call arg0, Response arg1) throws IOException {
+					try{
+						final String responseString = arg1.body().string();
+						final Boolean result = new ObjectMapper().readValue(responseString, Boolean.class);
+						
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								onCheckLikedResult(result);
+							}
+						});
+					}catch(final Exception e){
+						e.printStackTrace();
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								onCheckLikedResult(false);
+							}
+
+						
+						});
+					}
+				}
+				
+				@Override
+				public void onFailure(Call arg0, IOException e) {
+					e.printStackTrace();
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							onCheckLikedResult(false);
+						}
+					});				
+				}
+			});
+		
+	}
+		private void onCheckLikedResult(boolean result) {
+			isLiked = result;
+			btnLikes.setTextColor(result ? Color.BLUE : Color.BLACK);
+			
+		}
 	protected void onFailure(Exception e) {
 		// new AlertDialog.Builder(this).setMessage(e.getMessage()).show();
 		Log.d("listF", e.toString());
@@ -179,8 +286,8 @@ public class FeedContextActivity extends Activity {
 
 	// 发送评论接口
 	void addComment() {
+		
 		CommentText = editComment.getText().toString();
-		Log.d("on", "我按下评论啦");
 		OkHttpClient client = HttpServer.getSharedClient();
 		MultipartBody requestBody = new MultipartBody.Builder().addFormDataPart("text", CommentText).build();
 		Request request = HttpServer.requestBuilderWithApi("article/" + article.getId() + "/comments")
@@ -190,21 +297,46 @@ public class FeedContextActivity extends Activity {
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
 				Log.d("fanh", arg1.body().string());
-				/*
-				 * final Pages<Comment> commentData = new
-				 * ObjectMapper().readValue(arg1.body().string(), new
-				 * TypeReference<Pages<Comment>>() { });
-				 * FeedContextActivity.this.runOnUiThread(new Runnable() {
-				 * 
-				 * @Override public void run() { String
-				 * haha=commentData.toString(); Log.d("fanS", haha); } });
-				 */
+				reloadComment();
+				
 			}
 
 			@Override
 			public void onFailure(Call arg0, IOException e) {
 				Log.d("fanF", e.getMessage());
 				new AlertDialog.Builder(getBaseContext()).setMessage(e.getMessage()).show();
+			}
+		});
+		editComment.setText("");
+	}
+	
+	private boolean isLiked;
+	void toggleLikes(){
+		MultipartBody requestBody=  new MultipartBody.Builder().addFormDataPart("likes", String.valueOf(!isLiked)).build();
+		Request request = HttpServer.requestBuilderWithApi("article/"+article.getId()+"/likes")
+				.post(requestBody).build();
+		HttpServer.getSharedClient().newCall(request).enqueue(new Callback() {
+			
+			@Override
+			public void onResponse(Call arg0, Response arg1) throws IOException {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						reloadComment();
+					}
+				});
+			}
+			
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						reloadComment();
+					}
+				});
 			}
 		});
 	}

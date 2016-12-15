@@ -3,20 +3,23 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Comments implements Serializable{
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Comments{
 Integer id;
 String text;
-public User getAuthour() {
-	return authour;
-}
-public void setAuthour(User authour) {
-	this.authour = authour;
-}
 Article article;
-User authour;
+User author;
 
 Date creatDate;
 Date editDate;
+public User getAuthor() {
+	return author;
+}
+public void setAuthor(User author) {
+	this.author = author;
+}
+
 public Integer getId() {
 	return id;
 }

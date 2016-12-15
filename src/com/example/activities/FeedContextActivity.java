@@ -43,16 +43,17 @@ public class FeedContextActivity extends Activity {
 	Button btnComment;
 	EditText editComment;
 	static String CommentText;
+	int page = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feedcontext);
-		ListView listComment = (ListView)findViewById(R.id.list_comments);
-		//LayoutInflater inflater = null;
-		//btnLoadMore = inflater.inflate(R.layout.widget_load_more, null);
-		//textLoadMore = (TextView) btnLoadMore.findViewById(R.id.text);
+		ListView listComment = (ListView) findViewById(R.id.list_comments);
+		// LayoutInflater inflater = null;
+		// btnLoadMore = inflater.inflate(R.layout.widget_load_more, null);
+		// textLoadMore = (TextView) btnLoadMore.findViewById(R.id.text);
 		TextView textFeedMessage = (TextView) findViewById(R.id.text_feed_list_message);
 		TextView textFeedAuthorName = (TextView) findViewById(R.id.text_feed_author_name);
 		TextView textFeedEditDate = (TextView) findViewById(R.id.text_feed_edit_time);
@@ -64,11 +65,8 @@ public class FeedContextActivity extends Activity {
 		article = (Article) getIntent().getSerializableExtra("article");
 		textFeedMessage.setText(article.getText());
 
-		
-
-		//listComment.addFooterView(btnLoadMore);
+		// listComment.addFooterView(btnLoadMore);
 		listComment.setAdapter(listCommentAdapter);
-
 
 		btnComment.setOnClickListener(new OnClickListener() {
 
@@ -80,25 +78,26 @@ public class FeedContextActivity extends Activity {
 
 	}
 
+	// 评论列表接口
 	BaseAdapter listCommentAdapter = new BaseAdapter() {
 		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = null;
 			if (convertView == null) {
+
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.fragment_single_list, null);
-			} 
-			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);
-			TextView textAuthorName = (TextView) view.findViewById(R.id.text_author_name);
-			TextView textEditTime = (TextView) view.findViewById(R.id.text_edit_time);
-			
+				convertView = inflater.inflate(R.layout.fragment_single_list, null);
+			}
 			Comments comment = commentData.get(position);
-			textMessage.setText(comment.getAuthour().getName() + " : " + comment.getText());
-			textAuthorName.setText(comment.getAuthour().getName());
+			TextView textMessage = (TextView) convertView.findViewById(R.id.text_list_message);
+			TextView textAuthorName = (TextView) convertView.findViewById(R.id.text_author_name);
+			TextView textEditTime = (TextView) convertView.findViewById(R.id.text_edit_time);
+
+			textMessage.setText(comment.getAuthor().getName() + " : " + comment.getText());
+			textAuthorName.setText(comment.getAuthor().getName());
 			SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			textEditTime.setText(dateFormater.format(comment.getEditDate()));
-			return view;
+			return convertView;
 		}
 
 		@Override
@@ -122,6 +121,7 @@ public class FeedContextActivity extends Activity {
 		}
 	};
 
+	// 重新加载评论的方法
 	void reloadComment() {
 
 		OkHttpClient client = HttpServer.getSharedClient();
@@ -131,18 +131,24 @@ public class FeedContextActivity extends Activity {
 
 			@Override
 			public void onResponse(Call arg0, Response arg1) throws IOException {
-				Log.d("comments", arg1.body().string());
-				final Pages<Comments> commentData = new ObjectMapper().readValue(arg1.body().string(),
-						new TypeReference<Pages<Comments>>() {
-				});
-				FeedContextActivity.this.runOnUiThread(new Runnable() {
+				String responeseComment = arg1.body().string();
 
-					@Override
-					public void run() {
-						FeedContextActivity.this.commentData=commentData.getContent();
-						listCommentAdapter.notifyDataSetInvalidated();
-					}
-				});
+				Log.d("comments", responeseComment);
+				try {
+					final Pages<Comments> commentData = new ObjectMapper().readValue(responeseComment,
+							new TypeReference<Pages<Comments>>() {
+							});
+					FeedContextActivity.this.runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							FeedContextActivity.this.reloadData(commentData);
+						}
+					});
+				} catch (final Exception e) {
+					Log.d("fanOF", e.getMessage());
+					// FeedContextActivity.this.onFailure(e);
+				}
 			}
 
 			@Override
@@ -151,15 +157,27 @@ public class FeedContextActivity extends Activity {
 
 					@Override
 					public void run() {
-						new AlertDialog.Builder(FeedContextActivity.this).setMessage(e.getMessage()).show();
+						Log.d("fanFF", e.getMessage());
+						// FeedContextActivity.this.onFailure(e);
 					}
 				});
 			}
 		});
 
-
 	}
 
+	protected void onFailure(Exception e) {
+		// new AlertDialog.Builder(this).setMessage(e.getMessage()).show();
+		Log.d("listF", e.toString());
+	}
+
+	protected void reloadData(Pages<Comments> commentData2) {
+		page = commentData2.getNumber();
+		commentData = commentData2.getContent();
+		listCommentAdapter.notifyDataSetInvalidated();
+	}
+
+	// 发送评论接口
 	void addComment() {
 		CommentText = editComment.getText().toString();
 		Log.d("on", "我按下评论啦");

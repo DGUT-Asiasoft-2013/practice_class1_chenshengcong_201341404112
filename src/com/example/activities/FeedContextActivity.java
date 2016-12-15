@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import com.example.activities.pages.FeedListFragment;
+import com.example.fragments.widgets.AvatarView;
 import com.example.login.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,6 +54,7 @@ public class FeedContextActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feedcontext);
 		ListView listComment = (ListView) findViewById(R.id.list_comments);
+	//	AvatarView avatar = (AvatarView)findViewById(R.id.avatar);
 		// LayoutInflater inflater = null;
 		// btnLoadMore = inflater.inflate(R.layout.widget_load_more, null);
 		// textLoadMore = (TextView) btnLoadMore.findViewById(R.id.text);
@@ -67,7 +69,7 @@ public class FeedContextActivity extends Activity {
 		textFeedEditDate.setText(getIntent().getStringExtra("editDate"));
 		article = (Article) getIntent().getSerializableExtra("article");
 		textFeedMessage.setText(article.getText());
-
+		//avatar.load(article.getAuthorAvatar());
 		// listComment.addFooterView(btnLoadMore);
 		listComment.setAdapter(listCommentAdapter);
 //为评论按钮添加监听接口
@@ -104,11 +106,12 @@ public class FeedContextActivity extends Activity {
 			TextView textMessage = (TextView) convertView.findViewById(R.id.text_list_message);
 			TextView textAuthorName = (TextView) convertView.findViewById(R.id.text_author_name);
 			TextView textEditTime = (TextView) convertView.findViewById(R.id.text_edit_time);
-
+			AvatarView avatar = (AvatarView)convertView.findViewById(R.id.avatar);
 			textMessage.setText(comment.getAuthor().getName() + " : " + comment.getText());
 			textAuthorName.setText(comment.getAuthor().getName());
 			SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			textEditTime.setText(dateFormater.format(comment.getEditDate()));
+			avatar.load(HttpServer.serverAddress+article.getAuthorAvatar());
 			return convertView;
 		}
 

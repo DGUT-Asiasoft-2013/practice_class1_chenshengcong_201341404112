@@ -1,7 +1,5 @@
 package com.example.fragments.widgets;
 
-
-
 import java.io.IOException;
 
 import android.content.Context;
@@ -16,6 +14,7 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import model.HttpServer;
 import model.User;
@@ -40,8 +39,7 @@ public class AvatarView extends View {
 	}
 
 	Paint paint;
-	float radius;
-	float srcWidth,srcHeight;
+	float srcWidth, srcHeight;
 	Handler mainThreadHandler = new Handler();;
 	
 	public void setBitmap(Bitmap bmp){
@@ -60,15 +58,17 @@ public class AvatarView extends View {
 			srcWidth = bmp.getWidth();
 			srcHeight = bmp.getHeight();	
 		}
+		
 		invalidate();
 	}
 	
 	public void load(User user){
-//		load(HttpServer.getSharedClient()+user.getAvatar());
 		load(HttpServer.serverAddress + user.getAvatar());
 	}
 	
 	public void load(String url){
+		
+		Log.d("qqq", url);
 		OkHttpClient client = HttpServer.getSharedClient();
 		
 		Request request = new Request.Builder()
@@ -89,14 +89,21 @@ public class AvatarView extends View {
 						}
 					});
 				}catch(Exception ex){
-					
+					mainThreadHandler.post(new Runnable() {
+						public void run() {
+							setBitmap(null);
+						}
+					});
 				}
 			}
 			
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
-				// TODO Auto-generated method stub
-				
+				mainThreadHandler.post(new Runnable() {
+					public void run() {
+						setBitmap(null);
+					}
+				});
 			}
 		});
 	}
@@ -107,12 +114,16 @@ public class AvatarView extends View {
 		if(paint!=null){
 			canvas.save();
 			
+			float dstWidth = getWidth();
+			float dstHeight = getHeight();
 			
-			float dsWidth = getWidth();
-			float dsHeight = getHeight();
-			float scaleX=srcWidth/dsWidth;
-			float scaleY= srcHeight/dsHeight;
-			canvas.drawCircle(scaleX/2, scaleY/2, Math.min(srcWidth, srcHeight)/2, paint);
+			float scaleX = srcWidth / dstWidth;
+			float scaleY = srcHeight / dstHeight;
+
+			canvas.scale(1/scaleX, 1/scaleY);
+
+			canvas.drawCircle(srcWidth/2, srcHeight/2, Math.min(srcWidth, srcHeight)/2, paint);
+			
 			canvas.restore();
 		}
 		

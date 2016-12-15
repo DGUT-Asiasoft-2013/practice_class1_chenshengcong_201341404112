@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,7 +53,7 @@ public class FeedListFragment extends Fragment {
 			view = inflater.inflate(R.layout.fragment_page_feed_list, null);
 			btnLoadMore = inflater.inflate(R.layout.widget_load_more, null);
 			textLoadMore = (TextView) btnLoadMore.findViewById(R.id.text);
-
+			
 			ListView feedsList = (ListView) view.findViewById(R.id.list_feeds);// 绑定feeds页面中的ListView
 			feedsList.addFooterView(btnLoadMore);
 			feedsList.setAdapter(listAdapter);
@@ -100,13 +101,17 @@ public class FeedListFragment extends Fragment {
 			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);//
 			TextView textAuthorName = (TextView) view.findViewById(R.id.text_author_name);
 			TextView textEditTime = (TextView) view.findViewById(R.id.text_edit_time);
+			AvatarView avatar = (AvatarView)view.findViewById(R.id.avatar);
 			Article article = data.get(position);
 			textMessage.setText(article.getAuthorName() + " : " + article.getText());
 			textAuthorName.setText(article.getAuthorName());
 			SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			textEditTime.setText(dateFormater.format(article.getEditDate()));
-			// avatar.load(HttpServer.serverAddress +
-			// article.getAuthorAvatar());
+			
+			
+			avatar.load(HttpServer.serverAddress+article.getAuthorAvatar());
+			//Log.d("ee", HttpServer.serverAddress + article.getAuthorAvatar());
+			//Log.d("ee",article.getAuthorAvatar());
 			return view;
 		}
 

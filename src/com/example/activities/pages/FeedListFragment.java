@@ -101,7 +101,7 @@ public class FeedListFragment extends Fragment {
 			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);//
 			TextView textAuthorName = (TextView) view.findViewById(R.id.text_author_name);
 			TextView textEditTime = (TextView) view.findViewById(R.id.text_edit_time);
-			AvatarView avatar = (AvatarView)view.findViewById(R.id.avatar);
+			avatar = (AvatarView)view.findViewById(R.id.avatar);
 			Article article = data.get(position);
 			textMessage.setText(article.getAuthorName() + " : " + article.getText());
 			textAuthorName.setText(article.getAuthorName());

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Comments{
+public class Comments implements Serializable{
 Integer id;
 String text;
 Article article;

@@ -58,7 +58,7 @@ public class SearchPageFragment extends Fragment {
 			btnSearcheArticle = (Button) view.findViewById(R.id.btn_search_article);
 			editSearchArticle = (EditText) view.findViewById(R.id.edit_search_article);
 			SearchArcticleList = (ListView) view.findViewById(R.id.list_search_article);
-			avatar = (AvatarView) view.findViewById(R.id.avatar);
+		
 			SearchArcticleList.addFooterView(btnLoadMore);
 			SearchArcticleList.setAdapter(listAdapter);
 			// 为找到的文章列表项添加点击接口
@@ -114,12 +114,14 @@ public class SearchPageFragment extends Fragment {
 			TextView textMessage = (TextView) view.findViewById(R.id.text_list_message);//
 			TextView textAuthorName = (TextView) view.findViewById(R.id.text_author_name);
 			TextView textEditTime = (TextView) view.findViewById(R.id.text_edit_time);
+			avatar = (AvatarView) view.findViewById(R.id.avatar);
 			Article article = data.get(position);
 			textMessage.setText(article.getAuthorName() + " : " + article.getText());
 			textAuthorName.setText(article.getAuthorName());
 			SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			textEditTime.setText(dateFormater.format(article.getEditDate()));
 			 avatar.load(HttpServer.serverAddress + article.getAuthorAvatar());
+			 Log.d("u", HttpServer.serverAddress + article.getAuthorAvatar());
 			return view;
 		}
 

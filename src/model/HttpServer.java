@@ -1,6 +1,7 @@
 package model;
 
 import java.net.CookieManager;
+import java.net.CookieManager;
 import java.net.CookiePolicy;
 
 import okhttp3.JavaNetCookieJar;
@@ -22,10 +23,10 @@ public class HttpServer {
 	// 创建让其他类调用客户端的方法
 	public static OkHttpClient getSharedClient() {
 		return client;
-	}
+}
 
 	// 创建调用服务器的api方法，例如 api=hello
-	public static String serverAddress = "http://172.27.0.15:8080/membercenter/"; 
+	public static String serverAddress = "http:/192.168.123.141:8080/membercenter/"; 
 	public static Request.Builder requestBuilderWithApi(String api) {
 		return new Request.Builder().url(serverAddress+"api/" + api);
 	}

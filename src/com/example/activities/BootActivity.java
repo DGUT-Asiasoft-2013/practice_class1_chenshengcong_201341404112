@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
+import model.HttpServer;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.internal.http2.Http2Stream;
 
 public class BootActivity extends Activity {
 
@@ -39,11 +42,13 @@ public class BootActivity extends Activity {
 		 */
 		StartLoginActivity();
 
-		OkHttpClient client = new OkHttpClient();
+	/*	OkHttpClient client = new OkHttpClient();
 
 		Request request = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/hello")
 				.method("GET", null).build();
-
+*/
+		OkHttpClient client =HttpServer.getSharedClient();
+		Request request =HttpServer.requestBuilderWithApi("hello").build();
 		client.newCall(request).enqueue(new Callback() {
 			
 

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import model.HttpServer;
 import model.MD5;
 import model.User;
 import okhttp3.Call;
@@ -143,7 +144,7 @@ public class RegisterActivity extends Activity {
 			final RequestBody imgBody = RequestBody.create(MediaType.parse("image.png"), pngData);
 			requestBody.addFormDataPart("avatar", "avatar.png", imgBody);
 		}
-		Request requst = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/register")
+		Request requst = HttpServer.requestBuilderWithApi("register")
 				.method("post", null).post(requestBody.build()).build();
 
 		// 建立请求

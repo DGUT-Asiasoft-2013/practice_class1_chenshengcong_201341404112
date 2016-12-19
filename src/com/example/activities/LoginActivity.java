@@ -95,7 +95,7 @@ public class LoginActivity extends Activity {
 				.addFormDataPart("account", inputAccount).addFormDataPart("passwordHash", inputPassword);
 		
 		
-		Request requst = new Request.Builder().url("http://172.27.0.15:8080/membercenter/api/login")
+		Request requst = HttpServer.requestBuilderWithApi("login")
 				.method("post", null)
 				.post(requestBody.build()).build();
 		

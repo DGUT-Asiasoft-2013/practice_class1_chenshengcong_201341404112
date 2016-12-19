@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.example.fragments.widgets.AvatarView;
 import com.example.login.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;

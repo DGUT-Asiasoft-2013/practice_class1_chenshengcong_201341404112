@@ -11,7 +11,6 @@ import com.example.fragments.widgets.AvatarView;
 import com.example.login.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
